@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PatientCreateRequest;
+use App\Http\Requests\PatientUpdateRequest;
 use App\Http\Resources\Patient as PatientResource;
 use App\Patient;
 
@@ -39,6 +40,20 @@ class PatientController extends Controller
      */
     public function show(Patient $patient)
     {
+        return new PatientResource($patient);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  PatientUpdateRequest  $request
+     * @param  \App\Patient  $patient
+     * @return \Illuminate\Http\Response
+     */
+    public function update(PatientUpdateRequest $request, Patient $patient)
+    {
+        $patient->forceFill($request->validated())->save();
+
         return new PatientResource($patient);
     }
 }

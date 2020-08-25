@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\Controllers;
 use App\Patient;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Response;
 use Tests\TestCase;
 
 class PatientControllerTest extends TestCase
@@ -90,5 +91,46 @@ class PatientControllerTest extends TestCase
                     ]
                 ]
             ]);
+    }
+
+    public function test_it_updates_a_patient()
+    {
+        $user = factory(User::class)->create();
+        $patient = factory(Patient::class)->create([
+            'email' => null,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->json('PATCH', "/patients/{$patient->id}", [
+                'email' => 'sarah.connor@example.com',
+            ]);
+
+        $response
+            ->assertOk()
+            ->assertJson([
+                'data' => [
+                    'first_name' => $patient->first_name,
+                    'last_name' => $patient->last_name,
+                    'date_of_birth' => $patient->date_of_birth->format('Y-m-d'),
+                    'email' => 'sarah.connor@example.com',
+                ],
+            ]);
+    }
+
+    public function test_it_prevents_emptying_fields()
+    {
+        $user = factory(User::class)->create();
+        $patient = factory(Patient::class)->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->json('PATCH', "/patients/{$patient->id}", [
+                'first_name' => '',
+            ]);
+
+        $response
+            ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+            ->assertJsonValidationErrors('first_name');
     }
 }
