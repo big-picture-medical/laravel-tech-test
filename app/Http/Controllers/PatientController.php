@@ -20,4 +20,15 @@ class PatientController extends Controller
 
         return new PatientResource($patient);
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Patient  $patient
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Patient $patient)
+    {
+        return new PatientResource($patient);
+    }
 }

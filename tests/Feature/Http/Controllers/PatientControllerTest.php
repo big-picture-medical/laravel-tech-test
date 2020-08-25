@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Http\Controllers;
 
+use App\Patient;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -44,5 +45,26 @@ class PatientControllerTest extends TestCase
                     'email' => 'sarah.conner@example.com',
                 ],
 	    ]);
+    }
+
+    public function test_it_shows_a_patient()
+    {
+        $user = factory(User::class)->create();
+        $patient = factory(Patient::class)->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->json('GET', "/patients/{$patient->id}");
+
+        $response
+            ->assertOk()
+            ->assertJson([
+                'data' => [
+                    'first_name' => $patient->first_name,
+                    'last_name' => $patient->last_name,
+                    'date_of_birth' => $patient->date_of_birth->format('Y-m-d'),
+                    'email' => $patient->email,
+                ],
+            ]);
     }
 }
