@@ -1,60 +1,106 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
+# Laravel Technical Test
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+This repository is the starting point for the Big Picture Medical Laravel Technical Test.
 
-## About Laravel
+## Background
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+This codebase contains a fresh Laravel 7 installation with Laravel Sanctum for SPA authentication.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+As this is an API only, we have removed the web routes and other web components, as well as the `/api` route prefix.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+We have then added some basic patient management functionality which we would like you to extend.
 
-## Learning Laravel
+## Setup
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Start by cloning this repository locally. You do not need to publish your copy on GitHub as we will be requesting that you send us a zip or tarball with the git history intact.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+The existing tests have been configured to use an SQLite in-memory database so it should be sufficient to just run `composer install` and then `php artisan test` to get started.
 
-## Laravel Sponsors
+We are happy for the tests to be the sole entrypoint and that is where we'll be looking to see how to you use your API. However, feel free to also run the server if that suits your workflow better, whether that be `php artisan serve`, Valet, or even `docker-compose`.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## The tasks
 
-### Premium Partners
+1. Creating a patient is a significant event in our system, so we would like to update the existing behaviour to send a welcome email notification to them on creation.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[OP.GG](https://op.gg)**
+   The content will be determined by the clinical department, so placeholder text is fine.
 
-## Contributing
+   The automated tests should cover this, but no real emails should be sent during automated testing.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+   Email sending can be slow and error prone so we don't want it to occur as part of the request lifecycle.
 
-## Code of Conduct
+2. Imagine we have an internal medication API server on an Amazon VPC that is not publicly accessible.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+   This internal API doesn't require authentication, but we do have different servers set up for staging and production.
 
-## Security Vulnerabilities
+   There is just one endpoint and it can be used to search for medications matching a string.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+   An example of the URL might be `http://198.51.100.21/medications?search=Para`
+
+   It returns JSON data in the following general structure:
+
+   ```json
+   [
+        {
+            "id": 877262,
+            "name": "Paracetemol",
+            "...": "..."
+        },
+        {
+            "id": 71510,
+            "name": "Paraldehyde",
+            "...": "..."
+        }
+   ]
+   ```
+
+   Our front-end application needs to be able to search this data via the Laravel API. We only care about the `id` and `name`, however we think of the `id` as a medication "code", so we would like the Laravel response to look like this:
+
+   ```json
+   {
+       "data": [
+           {
+               "code": 877262,
+               "name": "Paracetemol"
+           },
+           {
+               "code": 71510,
+               "name": "Paraldehyde"
+           }
+       ]
+   }
+   ```
+
+   Your automated tests should not actually make requests to this server (in part because it doesn't actually exist).
+
+3. Doctors need to be able to document the medications a patient is currently taking and has taken in the past.
+
+   The front-end will need endpoints for assigning medications to a patient, and for listing existing patient medications.
+
+   The following information is significant:
+   * The medication name
+   * The medication code (may be alphanumeric)
+   * The date they commenced taking the medication
+   * The date they completed taking the medication
+   * The dosage (this can just be a text description)
+
+## What we're looking for
+
+* Idiomatic, conventional Laravel
+* Knowledge of Laravel features and the appropriate usage (this isn't "Laravel Bingo", so don't feel you need to show off everything you know if it doesn't suit the scenario)
+* Simple, readable code
+* Tests as documentation
+* Git hygiene
+
+## Good to know
+
+* If there is anything you would like to do or recommend that would take more time than is reasonable, please feel free to write a list rather than implementing it.
+* There are many valid ways to solve this. Don't panic about choosing a particular approach over another. Feel free to document the reasons for your decisions if you like, or we can just chat about it afterwards.
+* We are mindful of your time and have tried to simplify the scenarios from what might happen in reality. For example, the medication dosage would benefit from being stored with more structure rather than as a string but we felt that might be too onerous on you. Feel free to let us know any gaps you've found, but please don't feel any pressure to make it 100% real-world ready.
+* There are no trick questions. We're on the same team. If something seems wrong, please don't be afraid to bring it up or ask questions, but know that nothing is deliberately wrong.
+
+## Submission
+
+Once complete, please create a zip file or tarball of your repository with the git history intact, but preferably without the vendor directory. Then please send your solution to phillip@bigpicturemedical.com.
 
 ## License
 
