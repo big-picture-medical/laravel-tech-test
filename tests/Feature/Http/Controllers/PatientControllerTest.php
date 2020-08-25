@@ -67,4 +67,28 @@ class PatientControllerTest extends TestCase
                 ],
             ]);
     }
+
+    public function test_it_lists_patients()
+    {
+        $user = factory(User::class)->create();
+        factory(Patient::class, 3)->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->json('GET', '/patients');
+
+        $response
+            ->assertOk()
+            ->assertJsonCount(3, 'data')
+            ->assertJsonStructure([
+                'data' => [
+                    [
+                        'first_name',
+                        'last_name',
+                        'date_of_birth',
+                        'email',
+                    ]
+                ]
+            ]);
+    }
 }

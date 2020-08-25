@@ -9,6 +9,16 @@ use App\Patient;
 class PatientController extends Controller
 {
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return PatientResource::collection(Patient::paginate());
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  PatientCreateRequest  $request
