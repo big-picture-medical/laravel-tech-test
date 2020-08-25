@@ -133,4 +133,17 @@ class PatientControllerTest extends TestCase
             ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
             ->assertJsonValidationErrors('first_name');
     }
+
+    public function test_it_prevents_deleting_patients()
+    {
+        $user = factory(User::class)->create();
+        $patient = factory(Patient::class)->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->json('DELETE', "/patients/{$patient->id}");
+
+        $response
+            ->assertStatus(Response::HTTP_METHOD_NOT_ALLOWED);
+    }
 }
