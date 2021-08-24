@@ -88,7 +88,7 @@ Important to note is that our front-ends only need the `id` and `name`, however,
    }
    ```
 
-Your automated tests should **not** make requests to this server, but your production code should.
+Your automated tests should not make requests to this server, but your production code should.
 
 ## 3. Add the ability to record a patient's medications
 Doctors need to document the medications that a patient is currently taking, or has taken in the past.
