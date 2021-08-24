@@ -52,7 +52,7 @@ This API doesn't require authentication.
 
 The URL is: http://backend-tech-test-public.s3-website-ap-southeast-2.amazonaws.com/medications/
 
-By visiting that URL, can see the generalised structure of the content is...
+By visiting that URL, can see the structure of the content is...
 
    ```json
    [
@@ -60,8 +60,7 @@ By visiting that URL, can see the generalised structure of the content is...
             "id": 877262,
             "name": "Paracetemol",
             "added": "2020-01-02"
-        },
-        // ...
+        }
    ]
    ```
 
