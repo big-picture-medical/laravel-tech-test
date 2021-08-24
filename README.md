@@ -14,7 +14,7 @@ Note: As this is an API only codebase, we have removed the web routes, web compo
 ### Repo
 
 Start by cloning this repository locally. 
-You will not need to publish your copy on GitHub as we are requesting that you send us a zip or tarball with the git history intact.
+You will not need to publish your copy on GitHub as we are requesting that you send us a zip or tarball *with the git history intact*.
 
 ### Installation
 
@@ -44,32 +44,31 @@ Creating a patient is a significant event in our system, so we would like to upd
 
 ## 2. Expose an internal medications API 
 
-In this scenario, we have an internal medication API server that would hypothetically run on a VPC that is not publicly accessible.
+In this scenario, there is an internal medication API server that we want to interact with.
 
-This internal API doesn't require authentication.
+The API endpoint returns a list of medications.
 
-There is only one endpoint to interact with and it can be used to search for medications using a string-based search query parameter.
+This API doesn't require authentication.
 
-An example of the URL might be `http://198.51.100.21/medications?search=Para`
+The URL is: http://backend-tech-test-public.s3-website-ap-southeast-2.amazonaws.com/medications/
 
-This API returns JSON data in the following general structure:
+By visiting that URL, can see the structure of the content is...
 
    ```json
    [
         {
             "id": 877262,
             "name": "Paracetemol",
-            "...": "..."
-        },
-        {
-            "id": 71510,
-            "name": "Paraldehyde",
-            "...": "..."
+            "added": "2020-01-02"
         }
    ]
    ```
 
-This task aims to expose this internal API and its search ability to our frontend teams using Laravel.
+This endpoint will soon allow us to search for medications using a string-based search query parameter, but this functionality is not yet possible.
+
+An example of performing a search would be `http://backend-tech-test-public.s3-website-ap-southeast-2.amazonaws.com/medications/?search=Para`
+
+This task aims to have you proxy requests to this API via Laravel and allow the front-end to perform searches on the API utilising the upcoming `?search=query` functionality. Note: you should not manually filter the results - just assume that the API is filtering the results.
 
 Important to note is that our front-ends only need the `id` and `name`, however, we use different domain logic at Big Picture and wish the medication `id` to be exposed as "code". Ideally, we would like the Laravel response to look like this:
 
@@ -88,7 +87,7 @@ Important to note is that our front-ends only need the `id` and `name`, however,
    }
    ```
 
-Your automated tests should not make requests to this server (in part because it doesn't exist).
+Your automated tests should not make requests to this server, but your production code should.
 
 ## 3. Add the ability to record a patient's medications
 Doctors need to document the medications that a patient is currently taking, or has taken in the past.
