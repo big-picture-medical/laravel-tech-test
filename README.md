@@ -118,7 +118,7 @@ The front-end will need endpoints for assigning medications to a patient, and fo
 
 ## Submission
 
-Once complete, please create a zip file or tarball of your repository with the git history intact, but preferably without the vendor directory. Then please send your solution to phillip@bigpicturemedical.com.
+Once complete, please create a zip file or tarball of your repository with the git history intact, but preferably without the vendor directory. Then please send your solution to tim@bigpicturemedical.com.
 
 ## License
 
