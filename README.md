@@ -32,7 +32,7 @@ However, feel free to also run the server if that suits your workflow better, wh
 
 # The Tasks
 
-Before getting started, should you have any questions regarding any of the tasks please email phillip@bigpicturemedical.com. 
+Before getting started, should you have any questions regarding any of the tasks please email tim@bigpicturemedical.com. 
 
 ## 1. Send a welcome notification 
 
