@@ -32,7 +32,7 @@ However, feel free to also run the server if that suits your workflow better, wh
 
 # The Tasks
 
-Before getting started, should you have any questions regarding any of the tasks please email tim@bigpicturemedical.com. 
+Before getting started, should you have any questions regarding any of the tasks please email kamal.chapagain@bigpicturemedical.com. 
 
 ## 1. Send a welcome notification 
 
@@ -118,7 +118,7 @@ The front-end will need endpoints for assigning medications to a patient, and fo
 
 ## Submission
 
-Once complete, please create a zip file or tarball of your repository with the git history intact, but preferably without the vendor directory. Then please send your solution to tim@bigpicturemedical.com.
+Once complete, please create a zip file or tarball of your repository with the git history intact, but preferably without the vendor directory. Then please send your solution to kamal.chapagain@bigpicturemedical.com.
 
 ## License
 
